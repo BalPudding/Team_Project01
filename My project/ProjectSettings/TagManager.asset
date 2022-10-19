@@ -5,12 +5,13 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
-  - Dead
+  - Food
+  - Death
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Enemy
   - Water
   - UI
   - 
@@ -18,7 +19,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Immune
   - 
   - 
   - 
@@ -46,6 +47,9 @@ TagManager:
   - name: BackGround
     uniqueID: 2348200917
     locked: 0
-  - name: ForeGround
+  - name: MiddleGround
     uniqueID: 2003912191
+    locked: 0
+  - name: ForeGround
+    uniqueID: 3780868405
     locked: 0
