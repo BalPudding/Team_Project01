@@ -354,6 +354,7 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.Mathematics.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.PlasticSCM.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.Rider.Editor.ref.dll"
+-r:"Library/Bee/artifacts/1900b0aE.dag/Unity.Searcher.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.Services.Core.Analytics.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.Services.Core.Environments.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.Services.Core.ref.dll"
@@ -375,7 +376,11 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
 "Assets/03.Script/BackGroundScrolling.cs"
 "Assets/03.Script/Button.cs"
+"Assets/03.Script/Cards.cs"
+"Assets/03.Script/GameManager.cs"
+"Assets/03.Script/GameStart.cs"
 "Assets/03.Script/PlayerC.cs"
+"Assets/03.Script/Wheel.cs"
 -langversion:9.0
 
 /deterministic

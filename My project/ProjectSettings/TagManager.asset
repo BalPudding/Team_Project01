@@ -7,6 +7,9 @@ TagManager:
   - Enemy
   - Food
   - Death
+  - Shield
+  - SuperPower
+  - NotFall
   layers:
   - Default
   - TransparentFX

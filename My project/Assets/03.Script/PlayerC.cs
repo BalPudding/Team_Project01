@@ -19,7 +19,11 @@ public class PlayerC : MonoBehaviour
     private bool blink = false;
     float fade;
     public GameObject shieldObj;
-    private bool shield = true;
+    private bool shield = false;
+    public GameObject superpowerObj;
+    public GameObject notfallObj;
+    private bool notfallB = false;
+    private SpriteRenderer NotFallSprite;
 
 
 
@@ -28,7 +32,7 @@ public class PlayerC : MonoBehaviour
     {
         playerRigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-
+        NotFallSprite = notfallObj.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -132,7 +136,22 @@ public class PlayerC : MonoBehaviour
             }
             fade += Time.deltaTime;
         }
+        //낫폴 블링크
+        if(notfallB ==true)
 
+            if (fade < 0.5f)
+            {
+                NotFallSprite.color = new Color(1f, 1f, 1f, 1f - fade);
+            }
+            else
+            {
+                NotFallSprite.color = new Color(1f, 1f, 1f, fade);
+                if (fade > 1f)
+                {
+                    fade = 0;
+                }
+            }
+        fade += Time.deltaTime;
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -153,13 +172,6 @@ public class PlayerC : MonoBehaviour
         {
             Die();
         }
-        //힐 태그
-        if (other.gameObject.tag == "Food")
-        {
-            hp += 1;
-            healCycle = true;
-            other.gameObject.SetActive(false);
-        }
         //데스 태그
         if (other.gameObject.tag == "Death" && hp == 3)
         {
@@ -176,6 +188,30 @@ public class PlayerC : MonoBehaviour
         else if (other.gameObject.tag == "Death" && hp == 1)
         {
             Die();
+        }
+        //힐 태그
+        if(other.gameObject.tag =="Food")
+        {
+            Heal();
+            other.gameObject.SetActive(false);
+        }
+        //실드 태그
+        if(other.gameObject.tag =="Shield")
+        {
+            shield = true;
+            other.gameObject.SetActive(false);
+        }
+        //슈퍼파워 태그
+        if(other.gameObject.tag =="SuperPower")
+        {
+            OnSuperPower();
+            other.gameObject.SetActive(false);
+        }
+        //낫폴 태그
+        if(other.gameObject.tag == "NotFall")
+        {
+            NotFall();
+            other.gameObject.SetActive(false);
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -194,7 +230,6 @@ public class PlayerC : MonoBehaviour
         blink = true;
         hitplatform.SetActive(true);
         gameObject.layer = 11;
-        //spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
         Invoke("OffDamaged", 3);
     }
     void OffDamaged()
@@ -202,6 +237,39 @@ public class PlayerC : MonoBehaviour
         blink = false;
         hitplatform.SetActive(false);
         gameObject.layer = 0;
-        //spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+    }
+    void OnSuperPower()
+    {
+        superpowerObj.SetActive(true);
+        playerRigidbody.velocity = Vector2.zero;
+        transform.Translate(new Vector3(0, 2.5f, 0));
+        playerRigidbody.gravityScale = 0;
+        jumpcount = 3;
+        Invoke("OffSuperPower", 3);
+    }
+    void OffSuperPower()
+    {
+        superpowerObj.SetActive(false);
+        playerRigidbody.gravityScale = 1;
+        OnDamaged(gameObject.transform.position);
+    }
+    void Heal()
+    {
+        hp += 1;
+        healCycle = true;
+    }
+    void NotFall()
+    {
+        notfallObj.SetActive(true);
+        Invoke("OffNotFall", 3);
+    }
+    void OffNotFall()
+    {
+        notfallB = true;
+        Invoke("QuitNotFall", 3);
+    }
+    void QuitNotFall()
+    {
+        notfallObj.SetActive(false);
     }
 }

@@ -10,6 +10,10 @@ public class Button : MonoBehaviour
         SceneManager.LoadScene("01.StoryBoard");
     }
 
+    public void ToGame()
+    {
+        SceneManager.LoadScene("02.Game");
+    }
     public void Quit()
     {
         Debug.Log("Quit");
