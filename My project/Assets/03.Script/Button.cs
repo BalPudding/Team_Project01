@@ -5,17 +5,41 @@ using UnityEngine.SceneManagement;
 
 public class Button : MonoBehaviour
 {
-    public void ToStory()
+    GameManager gameManager;
+    public void Start()
     {
-        SceneManager.LoadScene("01.StoryBoard");
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
-    public void ToGame()
+    public void ToStory()
     {
+        gameManager.fadeIn = true;
+        Invoke("ToStoryActive", 1);
+        
+    }
+    public void ToStoryActive()
+    {
+        gameManager.fadeIn = false;
+        SceneManager.LoadScene("01.StoryBoard");
+    }
+    public void Skip()
+    {
+        gameManager.fadeIn = true;
+        Invoke("OnSkip", 1);
+    }
+    public void OnSkip()
+    {
+        gameManager.fadeIn = false;
         SceneManager.LoadScene("02.Game");
     }
     public void Quit()
     {
+        gameManager.fadeIn = true;
+        Invoke("OnQuit", 1);
+    }
+    public void OnQuit()
+    {
+        gameManager.fadeIn = false;
         Debug.Log("Quit");
         Application.Quit();
     }

@@ -7,6 +7,7 @@ public class PlayerC : MonoBehaviour
 {
     private Rigidbody2D playerRigidbody;
     private SpriteRenderer spriteRenderer;
+    private Animator animator;
     public int jumpForce = 700;
     private int jumpcount = 0;
     public int hp = 3;
@@ -24,6 +25,9 @@ public class PlayerC : MonoBehaviour
     public GameObject notfallObj;
     private bool notfallB = false;
     private SpriteRenderer NotFallSprite;
+    private bool isGround = true;
+    private bool isRising = false;
+    private bool isPower = false;
 
 
 
@@ -33,6 +37,7 @@ public class PlayerC : MonoBehaviour
         playerRigidbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         NotFallSprite = notfallObj.GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -137,7 +142,8 @@ public class PlayerC : MonoBehaviour
             fade += Time.deltaTime;
         }
         //낫폴 블링크
-        if(notfallB ==true)
+        if (notfallB == true)
+        {
 
             if (fade < 0.5f)
             {
@@ -151,7 +157,29 @@ public class PlayerC : MonoBehaviour
                     fade = 0;
                 }
             }
-        fade += Time.deltaTime;
+            fade += Time.deltaTime;
+        }
+
+        //애니메이터
+        animator.SetBool("Grounded", isGround);
+        animator.SetBool("Rising", isRising);
+        animator.SetBool("Power", isPower);
+        if(playerRigidbody.velocity.y<0)
+        {
+            isRising = false;
+        }
+        if (playerRigidbody.velocity.y > 0)
+        {
+            isRising = true;
+        }
+        if(Input.GetKeyDown(KeyCode.Space) == true)
+        {
+            isGround = false;
+        }
+        else if(Input.GetKeyDown(KeyCode.Space) == false && jumpcount == 0)
+        {
+            isGround = true;
+        }
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -160,12 +188,14 @@ public class PlayerC : MonoBehaviour
         {
             oneHit = true;
             hp -= 1;
+            other.gameObject.SetActive(false);
             OnDamaged(gameObject.transform.position) ;
         }
         else if(other.gameObject.tag == "Enemy" && hp == 2)
         {
             twoHit = true;
             hp -= 1;
+            other.gameObject.SetActive(false);
             OnDamaged(gameObject.transform.position);
         }
         else if(other.gameObject.tag == "Enemy" && hp == 1)
@@ -221,6 +251,14 @@ public class PlayerC : MonoBehaviour
             jumpcount = 0;
         }
     }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        isRising = true;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+    }
     private void Die()
     {
         SceneManager.LoadScene("04.Dead");
@@ -241,6 +279,8 @@ public class PlayerC : MonoBehaviour
     void OnSuperPower()
     {
         superpowerObj.SetActive(true);
+        isPower = true;
+        gameObject.layer = 11;
         playerRigidbody.velocity = Vector2.zero;
         transform.Translate(new Vector3(0, 2.5f, 0));
         playerRigidbody.gravityScale = 0;
@@ -250,6 +290,8 @@ public class PlayerC : MonoBehaviour
     void OffSuperPower()
     {
         superpowerObj.SetActive(false);
+        isPower = false;
+        gameObject.layer = 0;
         playerRigidbody.gravityScale = 1;
         OnDamaged(gameObject.transform.position);
     }

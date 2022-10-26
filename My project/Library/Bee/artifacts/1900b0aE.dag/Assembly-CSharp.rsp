@@ -377,6 +377,7 @@
 "Assets/03.Script/BackGroundScrolling.cs"
 "Assets/03.Script/Button.cs"
 "Assets/03.Script/Cards.cs"
+"Assets/03.Script/FadeOut.cs"
 "Assets/03.Script/GameManager.cs"
 "Assets/03.Script/GameStart.cs"
 "Assets/03.Script/PlayerC.cs"
