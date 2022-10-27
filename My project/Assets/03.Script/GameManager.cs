@@ -5,11 +5,17 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    private bool pause = false;
-    private float fade;
+    public bool pause = false;
+    public GameObject pauseScene;
+    public GameObject pauseButton;
+    public  float fade;
     public Image image;
+    public Image image2;
     public bool fadeIn = false;
     public bool fadeout = false;
+    public bool fadeIn2 = false;
+    public bool fadeout2 = false;
+
 
     // Update is called once per frame
     void Update()
@@ -19,16 +25,19 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 0;
             pause = true;
+            pauseScene.SetActive(true);
+            pauseButton.SetActive(false);
         }
         else if (Input.GetKeyDown(KeyCode.Escape) && pause == true)
         {
             Time.timeScale = 1;
             pause = false;
+            pauseScene.SetActive(false);
+            pauseButton.SetActive(true);
         }
         //페이드 인/아웃
         if (fadeIn == true || fadeout == true)
         {
-            Debug.Log(fade);
             if (fadeIn == true)
             {
                 image.color = new Color(0f, 0f, 0f, fade);
@@ -36,6 +45,18 @@ public class GameManager : MonoBehaviour
             else if (fadeout == true)
             {
                 image.color = new Color(0f, 0f, 0f, 0f - fade);
+            }
+            fade += Time.deltaTime;
+        }
+        if (fadeIn2 == true || fadeout2 == true)
+        {
+            if (fadeIn2 == true)
+            {
+                image2.color = new Color(255f, 255f, 255f, fade);
+            }
+            else if (fadeout2 == true)
+            {
+                image.color = new Color(255f, 255f, 255f, 0);
             }
             fade += Time.deltaTime;
         }

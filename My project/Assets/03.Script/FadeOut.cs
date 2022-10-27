@@ -5,28 +5,24 @@ using UnityEngine.UI;
 
 public class FadeOut : MonoBehaviour
 {
-    float fade;
     public Image image;
-    public bool fadeout = false;
-    // Start is called before the first frame update
-    void Start()
+    public GameObject gameObject01;
+    GameManager gameManager;
+    public void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (fadeout == true)
-        {
-            Debug.Log(fade);
-            image.color = new Color(255f, 255f, 255f, fade);
-            fade += Time.deltaTime;
-            gameObject.SetActive(false);
-        }
-    }
-
     public void Fade()
     {
-        fadeout = true;
+        gameObject.SetActive(false);
+    }
+    public void FadeIn()
+    {
+        gameObject01.SetActive(true);
+        gameManager.fadeIn2 = true;
+    }
+    public void Fadeout()
+    {
+        gameManager.fadeout2 = true;
     }
 }

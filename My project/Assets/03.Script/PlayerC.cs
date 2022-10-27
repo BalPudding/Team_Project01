@@ -5,11 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class PlayerC : MonoBehaviour
 {
-    private Rigidbody2D playerRigidbody;
+    public Rigidbody2D playerRigidbody;
     private SpriteRenderer spriteRenderer;
     private Animator animator;
+    private CapsuleCollider2D capsuleCollider2D;
     public int jumpForce = 700;
-    private int jumpcount = 0;
+    public int jumpcount = 0;
     public int hp = 3;
     private bool oneHit = false;
     private bool twoHit = false;
@@ -28,6 +29,7 @@ public class PlayerC : MonoBehaviour
     private bool isGround = true;
     private bool isRising = false;
     private bool isPower = false;
+    private bool isSlide = false;
 
 
 
@@ -38,6 +40,7 @@ public class PlayerC : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         NotFallSprite = notfallObj.GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        capsuleCollider2D = GetComponent<CapsuleCollider2D>();
     }
 
     // Update is called once per frame
@@ -64,6 +67,7 @@ public class PlayerC : MonoBehaviour
         { oneHit = false; }
         else if(oneHit == true)
         {
+            hp -= 1;
             transform.position = Vector3.Lerp(transform.position, new Vector2(-3,-3), 0.01f);
         }
         //2히트
@@ -77,6 +81,7 @@ public class PlayerC : MonoBehaviour
         { twoHit = false; }
         else if (twoHit == true)
         {
+            hp -= 1;
             transform.position = Vector3.Lerp(transform.position, new Vector2(-6, -3), 0.01f);
         }
         //낙사 1히트
@@ -164,6 +169,7 @@ public class PlayerC : MonoBehaviour
         animator.SetBool("Grounded", isGround);
         animator.SetBool("Rising", isRising);
         animator.SetBool("Power", isPower);
+        animator.SetBool("Sliding", isSlide);
         if(playerRigidbody.velocity.y<0)
         {
             isRising = false;
@@ -180,22 +186,33 @@ public class PlayerC : MonoBehaviour
         {
             isGround = true;
         }
+        if(Input.GetKey(KeyCode.LeftControl) == true && isGround == true)
+        {
+            isSlide = true;
+            capsuleCollider2D.offset = new Vector2(0, -0.16f);
+            capsuleCollider2D.direction = CapsuleDirection2D.Horizontal;
+            capsuleCollider2D.size = new Vector2(0.4f, 0.3f);
+        }
+        else
+        {
+            isSlide = false;
+            capsuleCollider2D.offset = new Vector2(0, 0);
+            capsuleCollider2D.direction = CapsuleDirection2D.Vertical;
+            capsuleCollider2D.size = new Vector2(0.4f, 0.6f);
+        }
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
         //적 태그
         if (other.gameObject.tag == "Enemy" && hp ==3)
         {
+            animator.SetTrigger("DoDie");
             oneHit = true;
-            hp -= 1;
-            other.gameObject.SetActive(false);
             OnDamaged(gameObject.transform.position) ;
         }
         else if(other.gameObject.tag == "Enemy" && hp == 2)
         {
             twoHit = true;
-            hp -= 1;
-            other.gameObject.SetActive(false);
             OnDamaged(gameObject.transform.position);
         }
         else if(other.gameObject.tag == "Enemy" && hp == 1)
@@ -253,7 +270,7 @@ public class PlayerC : MonoBehaviour
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
-        isRising = true;
+        isRising = false;
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -282,7 +299,7 @@ public class PlayerC : MonoBehaviour
         isPower = true;
         gameObject.layer = 11;
         playerRigidbody.velocity = Vector2.zero;
-        transform.Translate(new Vector3(0, 2.5f, 0));
+        transform.position = new Vector3(transform.position.x, 0, 0);
         playerRigidbody.gravityScale = 0;
         jumpcount = 3;
         Invoke("OffSuperPower", 3);

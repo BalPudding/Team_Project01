@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class Button : MonoBehaviour
 {
     GameManager gameManager;
+    public GameObject pauseScene;
+    public GameObject pauseButton;
     public void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -24,7 +26,9 @@ public class Button : MonoBehaviour
     }
     public void Skip()
     {
+        gameManager.fade = 0f;
         gameManager.fadeIn = true;
+        
         Invoke("OnSkip", 1);
     }
     public void OnSkip()
@@ -42,5 +46,20 @@ public class Button : MonoBehaviour
         gameManager.fadeIn = false;
         Debug.Log("Quit");
         Application.Quit();
+    }
+    public void Pause()
+    {
+        gameManager.pause = true;
+        Time.timeScale = 0;
+        pauseButton.SetActive(false);
+        pauseScene.SetActive(true);
+    }
+
+    public void OffPause()
+    {
+        gameManager.pause = false;
+        Time.timeScale = 1;
+        pauseButton.SetActive(true);
+        pauseScene.SetActive(false);
     }
 }
