@@ -29,7 +29,8 @@ public class PlayerC : MonoBehaviour
     private bool isGround = true;
     private bool isRising = false;
     private bool isPower = false;
-    private bool isSlide = false;
+    public bool isSlide = false;
+    public bool inputJump = false;
 
 
 
@@ -120,13 +121,14 @@ public class PlayerC : MonoBehaviour
         }
 
         //점프
-        if (Input.GetKeyDown(KeyCode.Space) && jumpcount < 2)
+        if (inputJump == true && jumpcount < 2)
         {
             playerRigidbody.velocity = Vector2.zero;
             
             playerRigidbody.AddForce(new Vector2(0, jumpForce));
 
             jumpcount += 1;
+            inputJump = false;
         }
         //블링크
         if (blink == true)
@@ -173,29 +175,29 @@ public class PlayerC : MonoBehaviour
         if(playerRigidbody.velocity.y<0)
         {
             isRising = false;
+            isGround = false;
         }
         if (playerRigidbody.velocity.y > 0)
         {
             isRising = true;
+            isGround = false;
         }
-        if(Input.GetKeyDown(KeyCode.Space) == true)
+        if(inputJump == true)
         {
             isGround = false;
         }
-        else if(Input.GetKeyDown(KeyCode.Space) == false && jumpcount == 0)
+        else if(inputJump == false && jumpcount == 0)
         {
             isGround = true;
         }
-        if(Input.GetKey(KeyCode.LeftControl) == true && isGround == true)
+        if( isSlide == true && isGround == true)
         {
-            isSlide = true;
             capsuleCollider2D.offset = new Vector2(0, -0.16f);
             capsuleCollider2D.direction = CapsuleDirection2D.Horizontal;
             capsuleCollider2D.size = new Vector2(0.4f, 0.3f);
         }
         else
         {
-            isSlide = false;
             capsuleCollider2D.offset = new Vector2(0, 0);
             capsuleCollider2D.direction = CapsuleDirection2D.Vertical;
             capsuleCollider2D.size = new Vector2(0.4f, 0.6f);

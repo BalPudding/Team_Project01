@@ -4,39 +4,38 @@ using UnityEngine;
 
 public class JumpSlide : MonoBehaviour
 {
-    public bool inputJump = false;
-    public bool inputSlide = false;
-    private PlayerC playerC;
-    int jumpC;
-    int jumpF;
-    Rigidbody2D Prigid;
+    PlayerC playerC;
+    public bool pointDown;
     // Start is called before the first frame update
     void Start()
     {
-        playerC = GetComponent<PlayerC>();
-        jumpC = playerC.GetComponent<PlayerC>().jumpcount;
-        jumpF = playerC.GetComponent<PlayerC>().jumpForce;
-        Prigid = playerC.GetComponent<PlayerC>().playerRigidbody;
+        playerC = GameObject.Find("Player").GetComponent<PlayerC>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (inputJump == true && jumpC < 2)
+        if(pointDown == true)
         {
-            Prigid.velocity = Vector2.zero;
-
-            Prigid.AddForce(new Vector2(0, jumpF));
-
-            playerC.jumpcount += 1;
+            playerC.isSlide = true;
         }
         else
         {
-            inputJump = false;
+            playerC.isSlide = false;
         }
     }
     public void InputJump()
     {
-        inputJump = true;
+        if (playerC.jumpcount < 2)
+        { playerC.inputJump = true; }
+    }
+    public void PointerDown()
+    {
+        pointDown = true;
+    }
+    public void PointerUp()
+    {
+        pointDown = false;
     }
 }
