@@ -31,6 +31,7 @@ public class PlayerC : MonoBehaviour
     private bool isPower = false;
     public bool isSlide = false;
     public bool inputJump = false;
+    StopScroll stopScroll;
 
 
 
@@ -42,11 +43,18 @@ public class PlayerC : MonoBehaviour
         NotFallSprite = notfallObj.GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         capsuleCollider2D = GetComponent<CapsuleCollider2D>();
+        stopScroll = GameObject.Find("BackGround (11)").GetComponent<StopScroll>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //엔딩
+        if(stopScroll.speed == 0)
+        {
+            transform.position = Vector3.Lerp(transform.position, new Vector2(6, transform.position.y), 0.01f);
+            Invoke("ToEnding", 3);
+        }
         //hp최댓값제한
         if(hp>3)
         {
@@ -68,8 +76,8 @@ public class PlayerC : MonoBehaviour
         { oneHit = false; }
         else if(oneHit == true)
         {
-            hp -= 1;
-            transform.position = Vector3.Lerp(transform.position, new Vector2(-3,-3), 0.01f);
+            hp = 2;
+            transform.position = Vector3.Lerp(transform.position, new Vector2(transform.position.x -3, transform.position.y), 0.01f);
         }
         //2히트
         if (shield == true && twoHit == true)
@@ -82,22 +90,20 @@ public class PlayerC : MonoBehaviour
         { twoHit = false; }
         else if (twoHit == true)
         {
-            hp -= 1;
-            transform.position = Vector3.Lerp(transform.position, new Vector2(-6, -3), 0.01f);
+            hp = 1;
+            transform.position = Vector3.Lerp(transform.position, new Vector2(transform.position.x - 3, transform.position.y), 0.01f);
         }
         //낙사 1히트
-        if (transform.position.x < -2.9f)
-        { oneFall = false; }
-        else if (oneFall == true)
+        if (oneFall == true)
         {
+            oneFall = false;
             transform.position = new Vector2(-3, -3);
         }
 
         //낙사 2히트
-        if (transform.position.x < -5.9f)
-        { twoFall = false; }
-        else if (twoFall == true)
+        if (twoFall == true)
         {
+            twoFall = false;
             transform.position = new Vector2(-6, -3);
         }
 
@@ -108,13 +114,13 @@ public class PlayerC : MonoBehaviour
             twoHit = false;
             if(hp == 2)
             {
-                transform.position = Vector3.Lerp(transform.position, new Vector2(-3, -3), 0.01f);
+                transform.position = Vector3.Lerp(transform.position, new Vector2(transform.position.x + 3, transform.position.y), 0.01f);
                 if (transform.position.x > -3.1f)
                 { healCycle = false; }
             }
             else if(hp == 3)
             {
-                transform.position = Vector3.Lerp(transform.position, new Vector2(0, -3), 0.01f);
+                transform.position = Vector3.Lerp(transform.position, new Vector2(transform.position.x + 3, transform.position.y), 0.01f);
                 if (transform.position.x > -0.1f)
                 { healCycle = false; }
             }
@@ -214,6 +220,7 @@ public class PlayerC : MonoBehaviour
         }
         else if(other.gameObject.tag == "Enemy" && hp == 2)
         {
+            animator.SetTrigger("DoDie");
             twoHit = true;
             OnDamaged(gameObject.transform.position);
         }
@@ -293,7 +300,15 @@ public class PlayerC : MonoBehaviour
     {
         blink = false;
         hitplatform.SetActive(false);
-        gameObject.layer = 0;
+        if (isPower == true)
+        { 
+            gameObject.layer = 11; 
+        }
+        else
+        {
+            gameObject.layer = 0;
+        }
+            
     }
     void OnSuperPower()
     {
@@ -333,4 +348,10 @@ public class PlayerC : MonoBehaviour
     {
         notfallObj.SetActive(false);
     }
+
+    void ToEnding()
+    {
+        SceneManager.LoadScene("03.Clear");
+    }
+
 }

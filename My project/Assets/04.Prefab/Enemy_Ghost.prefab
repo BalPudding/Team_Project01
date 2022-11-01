@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2113266559229510953}
   - component: {fileID: 7630359265458407401}
   - component: {fileID: 6345742663584718692}
+  - component: {fileID: -1578359845374418978}
   m_Layer: 3
   m_Name: Enemy_Ghost
   m_TagString: Enemy
@@ -76,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0cf8e43433bc36f43aee63fc5b3cc2dd, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -128,3 +129,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-1578359845374418978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113266559229510952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c6d3518215e20444b383e7ff2e9500d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

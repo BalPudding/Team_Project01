@@ -380,8 +380,10 @@
 "Assets/03.Script/FadeOut.cs"
 "Assets/03.Script/GameManager.cs"
 "Assets/03.Script/GameStart.cs"
+"Assets/03.Script/GhostShade.cs"
 "Assets/03.Script/JumpSlide.cs"
 "Assets/03.Script/PlayerC.cs"
+"Assets/03.Script/StopScroll.cs"
 "Assets/03.Script/Wheel.cs"
 -langversion:9.0
 
