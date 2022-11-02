@@ -32,6 +32,7 @@ public class PlayerC : MonoBehaviour
     public bool isSlide = false;
     public bool inputJump = false;
     StopScroll stopScroll;
+    AudioSource jump;
 
 
 
@@ -44,6 +45,7 @@ public class PlayerC : MonoBehaviour
         animator = GetComponent<Animator>();
         capsuleCollider2D = GetComponent<CapsuleCollider2D>();
         stopScroll = GameObject.Find("BackGround (11)").GetComponent<StopScroll>();
+        jump = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -135,6 +137,7 @@ public class PlayerC : MonoBehaviour
 
             jumpcount += 1;
             inputJump = false;
+            jump.Play();
         }
         //ºí¸µÅ©
         if (blink == true)

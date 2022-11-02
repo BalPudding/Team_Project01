@@ -6,11 +6,12 @@ public class JumpSlide : MonoBehaviour
 {
     PlayerC playerC;
     public bool pointDown;
+    AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
         playerC = GameObject.Find("Player").GetComponent<PlayerC>();
-        
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -33,9 +34,14 @@ public class JumpSlide : MonoBehaviour
     public void PointerDown()
     {
         pointDown = true;
+        Play();
     }
     public void PointerUp()
     {
         pointDown = false;
+    }
+    public void Play()
+    {
+        audioSource.Play();
     }
 }
